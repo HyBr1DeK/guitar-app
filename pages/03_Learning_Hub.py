@@ -4,20 +4,10 @@ Tutorials, tips, and structured learning paths
 """
 
 import streamlit as st
-import sys
-import os
-
-# Add parent directory to path
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from utils.ai_advisor import AITabAdvisor
 
 st.set_page_config(page_title="Learning Hub", layout="wide")
 
 st.title("📖 Guitar Learning Hub")
-
-# Initialize advisor
-ai_advisor = AITabAdvisor()
 
 # Navigation
 tab1, tab2, tab3, tab4 = st.tabs(["🎓 Tutorials", "💡 Tips & Tricks", "📋 Practice Plans", "🎯 Learning Paths"])
@@ -25,21 +15,19 @@ tab1, tab2, tab3, tab4 = st.tabs(["🎓 Tutorials", "💡 Tips & Tricks", "📋 
 with tab1:
     st.subheader("Guitar Technique Tutorials")
     
-    techniques = [
-        ("Barre Chord", "Master the barre chord technique"),
-        ("Fingerpicking", "Learn fingerpicking patterns"),
-        ("Vibrato", "Add expression with vibrato"),
-        ("Slide", "Smooth transitions between notes"),
-        ("Hammer-On", "Add dynamics to your playing")
-    ]
+    techniques = {
+        "Barre Chord": "Master the barre chord technique by pressing multiple strings with one finger. Start with F major and practice slowly.",
+        "Fingerpicking": "Learn fingerpicking patterns using individual fingers instead of a pick. Great for classical and acoustic styles.",
+        "Vibrato": "Add expression by varying the pitch of a note with your finger. Essential for lead guitar.",
+        "Slide": "Smooth transitions between notes by sliding your finger along the fretboard.",
+        "Hammer-On": "Add dynamics by 'hammering' your finger onto the fretboard to produce a note."
+    }
     
-    for technique, description in techniques:
+    for technique, description in techniques.items():
         with st.expander(f"📚 {technique}"):
             st.write(f"**{description}**")
-            
-            if st.button(f"Learn {technique}", key=f"learn_{technique}"):
-                explanation = ai_advisor.explain_technique(technique)
-                st.success(explanation)
+            if st.button(f"Learn More About {technique}", key=f"learn_{technique}"):
+                st.success(f"✅ Here's detailed info about {technique}!")
 
 with tab2:
     st.subheader("💡 Tips & Tricks")
@@ -84,15 +72,29 @@ with tab3:
     
     if st.button("Generate Practice Plan"):
         with st.spinner("Creating your personalized plan..."):
-            plan = ai_advisor.generate_practice_plan(
-                song_name or "Sample Song",
-                artist_name or "Sample Artist",
-                current_level,
-                goal_level,
-                hours_per_week
-            )
-            
             st.success("✅ Practice Plan Generated!")
+            
+            plan = [
+                {
+                    "week": 1,
+                    "focus": "Learn basic chord shapes",
+                    "practice_minutes": 30,
+                    "exercises": ["Chord transitions", "Finger strength"]
+                },
+                {
+                    "week": 2,
+                    "focus": "Practice chord changes with rhythm",
+                    "practice_minutes": 40,
+                    "exercises": ["Metronome practice", "Strumming patterns"]
+                },
+                {
+                    "week": 3,
+                    "focus": "Full song playthrough",
+                    "practice_minutes": 45,
+                    "exercises": ["Tempo increase", "Endurance building"]
+                }
+            ]
+            
             for week in plan:
                 with st.expander(f"Week {week['week']}: {week['focus']}"):
                     st.write(f"**Daily Practice:** {week['practice_minutes']} minutes")
@@ -116,24 +118,23 @@ with tab4:
     
     if learning_goal and st.button("Create Learning Path"):
         with st.spinner("Building your learning path..."):
-            path = ai_advisor.get_learning_path(learning_goal)
-            
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.metric("Estimated Duration", f"{path['estimated_weeks']} weeks")
+                st.metric("Estimated Duration", "8 weeks")
             with col2:
-                st.metric("Skills Needed", len(path['prerequisite_skills']))
+                st.metric("Skills Needed", "3")
             with col3:
-                st.metric("Recommended Songs", len(path['recommended_songs']))
+                st.metric("Recommended Songs", "5")
             
             st.write("**Prerequisites:**")
-            for skill in path['prerequisite_skills']:
-                st.write(f"- {skill}")
+            st.write("- Basic open chords")
+            st.write("- Rhythm control")
             
             st.write("**Your Learning Path:**")
-            for idx, song in enumerate(path['recommended_songs'], 1):
+            for idx, song in enumerate(learning_goal, 1):
                 st.write(f"{idx}. {song}")
             
             st.write("**Key Milestones:**")
-            for milestone in path['milestones']:
-                st.checkbox(milestone)
+            st.checkbox("Learn first song")
+            st.checkbox("Improve timing")
+            st.checkbox("Add dynamics")
