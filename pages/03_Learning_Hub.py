@@ -4,6 +4,12 @@ Tutorials, tips, and structured learning paths
 """
 
 import streamlit as st
+import sys
+import os
+
+# Add parent directory to path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from utils.ai_advisor import AITabAdvisor
 
 st.set_page_config(page_title="Learning Hub", layout="wide")
