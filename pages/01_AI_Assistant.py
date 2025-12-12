@@ -69,28 +69,26 @@ with col1:
 with col2:
     if st.button("📚 Learn a Technique", use_container_width=True):
         st.session_state.show_technique_selector = True
+
+if st.session_state.get("show_technique_selector", False):
+    st.divider()
+    st.subheader("🎵 Choose a Technique to Learn")
     
-    if st.session_state.get("show_technique_selector", False):
-        st.divider()
-        st.subheader("🎵 Choose a Technique to Learn")
-        technique = st.selectbox(
-            "Select a technique:",
-            ["Barre Chord", "Fingerpicking", "Vibrato", "Slide", "Hammer-On", "Pull-Off", "Bend", "Palm Mute"],
-            key="technique_select"
-        )
-        col_btn1, col_btn2 = st.columns(2)
-        
-        with col_btn1:
-            if st.button(f"📖 Learn {technique}", use_container_width=True):
-                with st.spinner(f"Learning about {technique}..."):
-                    response = st.session_state.ai_advisor.explain_technique(technique)
-                    st.success(f"✅ Learning: {technique}")
-                    st.info(response)
-        
-        with col_btn2:
-            if st.button("❌ Close", use_container_width=True):
-                st.session_state.show_technique_selector = False
-                st.rerun()
+    technique = st.selectbox(
+        "Select a technique:",
+        ["Barre Chord", "Fingerpicking", "Vibrato", "Slide", "Hammer-On", "Pull-Off", "Bend", "Palm Mute"],
+        key="technique_select"
+    )
+    
+    if st.button("📖 Learn & Get Answer", use_container_width=True):
+        with st.spinner(f"Loading {technique} details..."):
+            response = st.session_state.ai_advisor.explain_technique(technique)
+            st.markdown(response)
+    
+    st.divider()
+    if st.button("❌ Close & Hide", use_container_width=True):
+        st.session_state.show_technique_selector = False
+        st.rerun()
 
 with col3:
     if st.button("🎸 Chords Library", use_container_width=True):
