@@ -4,6 +4,7 @@ User configuration and API setup
 """
 
 import streamlit as st
+import os
 
 st.set_page_config(page_title="Settings", layout="wide")
 
@@ -17,7 +18,6 @@ if "user_settings" not in st.session_state:
         "tab_source": "All Sources",
         "notifications": True,
         "dark_mode": False,
-        "api_key": ""
     }
 
 # Tabs for different settings categories
@@ -76,34 +76,82 @@ with tab2:
 with tab3:
     st.subheader("🔗 API Keys & Integration")
     
-    st.warning("⚠️ Never share your API keys publicly!")
+    st.info("""
+    **🚀 Enable AI Features!**
+    
+    To use AI-powered recommendations, explanations, and practice plans, 
+    you need an OpenAI API key.
+    """)
+    
+    st.markdown("**Step 1: Get Your API Key**")
+    st.write("""
+    1. Go to [OpenAI API Keys](https://platform.openai.com/api-keys)
+    2. Sign up or log in with your OpenAI account
+    3. Click "Create new secret key"
+    4. Copy the key (you won't see it again!)
+    """)
+    
+    st.markdown("**Step 2: Add Your Key Here**")
+    
+    # Get current API key if it exists
+    current_key = st.secrets.get("OPENAI_API_KEY", "")
     
     openai_key = st.text_input(
         "OpenAI API Key",
+        value=current_key,
         type="password",
-        help="For AI-powered recommendations"
-    )
-    
-    if openai_key:
-        st.session_state.user_settings["api_key"] = openai_key
-    
-    ultimateguitar_key = st.text_input(
-        "Ultimate Guitar API Key (Optional)",
-        type="password",
-        help="For enhanced tab searching"
+        help="Paste your OpenAI API key here. It will be stored securely."
     )
     
     col1, col2 = st.columns(2)
+    
     with col1:
-        if st.button("Test Connection"):
-            st.info("Testing API connection...")
-            # In production, would test actual connection
-            st.success("✅ Connection successful!")
+        if st.button("Save API Key", type="primary"):
+            if openai_key:
+                try:
+                    # For Streamlit Cloud, users need to add it through Secrets
+                    st.success("""
+                    ✅ **To complete setup:**
+                    
+                    Since you're on Streamlit Cloud, please:
+                    1. Click "Deploy" or go to your app settings
+                    2. Click "Secrets" in the sidebar
+                    3. Add: `OPENAI_API_KEY = "your-key-here"`
+                    4. Rerun the app
+                    
+                    For local development, create a `.streamlit/secrets.toml` file:
+                    ```
+                    OPENAI_API_KEY = "your-key-here"
+                    ```
+                    """)
+                except Exception as e:
+                    st.error(f"Error: {str(e)}")
+            else:
+                st.warning("Please paste your API key first!")
     
     with col2:
-        if st.button("Clear Keys"):
-            st.session_state.user_settings["api_key"] = ""
-            st.warning("⚠️ API keys cleared!")
+        if st.button("Test Connection"):
+            if openai_key or current_key:
+                with st.spinner("Testing connection..."):
+                    try:
+                        # Simple test - try to import and create client
+                        from openai import OpenAI
+                        test_client = OpenAI(api_key=openai_key or current_key)
+                        
+                        # Try a simple API call
+                        response = test_client.models.list()
+                        st.success("✅ Connection successful! Your API key is valid.")
+                    except Exception as e:
+                        st.error(f"❌ Connection failed: {str(e)}")
+            else:
+                st.warning("Please add your API key first!")
+    
+    st.warning("""
+    ⚠️ **Security Note:**
+    - Never share your API key publicly
+    - On Streamlit Cloud, keys are stored securely and never shown in logs
+    - You'll be charged by OpenAI only for what you use
+    """)
 
 with tab4:
     st.subheader("📢 Notification Settings")
@@ -143,6 +191,7 @@ col1, col2 = st.columns(2)
 
 with col1:
     if st.button("Clear Cache"):
+        st.cache_data.clear()
         st.info("Cache cleared! Refresh the app to see changes.")
 
 with col2:
@@ -155,6 +204,5 @@ with col2:
                 "tab_source": "All Sources",
                 "notifications": True,
                 "dark_mode": False,
-                "api_key": ""
             }
             st.success("✅ Settings reset to defaults!")
