@@ -79,10 +79,13 @@ with col2:
                 st.info(response)
 
 with col3:
-    st.page_link("pages/06_Chords.py", label="🎸 Chords Library", use_container_width=True)
+    if st.button("🎸 Chords Library", use_container_width=True):
+        st.switch_page("pages/06_Chords.py")
 
 with col4:
-    st.page_link("pages/05_My_Songs.py", label="📤 Analyze Song", use_container_width=True)
+    if st.button("📤 Analyze Song", use_container_width=True):
+        st.switch_page("pages/05_My_Songs.py")
 
 with col5:
-    st.page_link("pages/02_My_Library.py", label="📚 My Collection", use_container_width=True)
+    if st.button("📚 My Collection", use_container_width=True):
+        st.switch_page("pages/02_My_Library.py")
