@@ -10,7 +10,7 @@ import os
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-st.set_page_config(page_title="Chords Library", layout="wide")
+st.set_page_config(page_title="🎸 Chords Library", layout="wide")
 
 st.title("🎸 Guitar Chords Library")
 st.write("Explore 30+ guitar chords with visual diagrams, finger positions, and tips!")
