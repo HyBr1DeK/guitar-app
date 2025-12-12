@@ -189,12 +189,14 @@ st.info("""
 2. Browse through available tabs from different sources
 **🚀 Features Available Now:**
 - 🤖 Intelligent AI that answers guitar questions in detail
+- 🎸 **Chord Library** - Browse 30+ chords with visual diagrams
 - 📤 Upload songs to analyze chord progressions
 - 📚 Personalized learning recommendations
 - 📋 Practice plans and technique tutorials
 - 💾 Track your progress and mastered songs
 
 **Try These:**
+- Click "🎸 Chords Library" to browse guitar chords with diagrams!
 - Ask "How to play F chord?" in AI Assistant
 - Upload a song in My Songs to get chord analysis
 - Create a learning path in Learning Hub

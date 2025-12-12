@@ -58,10 +58,10 @@ if user_input:
 st.markdown("---")
 st.subheader("⚡ Quick Actions")
 
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
-    if st.button("🎯 Get Song Recommendation"):
+    if st.button("🎯 Song Recommendation"):
         with st.spinner("Getting recommendations..."):
             response = st.session_state.ai_advisor.get_tab_recommendation("Intermediate", "rock")
             st.info(response)
@@ -78,9 +78,13 @@ with col2:
                 st.info(response)
 
 with col3:
-    if st.button("📋 Analyze Chords"):
-        st.info("Go to **My Songs** page to upload and analyze your song files!")
+    if st.button("🎸 Chords Library"):
+        st.info("Go to **Chords** page to browse 30+ chords with diagrams!")
 
 with col4:
-    if st.button("🎵 My Songs"):
-        st.info("Visit the **My Songs** page to upload and manage your song collection!")
+    if st.button("📤 Analyze Song"):
+        st.info("Go to **My Songs** page to upload and analyze!")
+
+with col5:
+    if st.button("📚 My Collection"):
+        st.info("Go to **My Library** to track your progress!")
