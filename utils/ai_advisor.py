@@ -278,7 +278,28 @@ Example: Am - F - C - G
 With daily 20-30 minute practice, you'll master chord transitions in 4-6 weeks!"""
         
         # Technique questions
-        elif any(word in msg_lower for word in ["vibrato", "hammer on", "pull off", "slide", "technique"]):
+        elif any(word in msg_lower for word in ["vibrato", "hammer on", "pull off", "slide", "bend", "palm mute", "fingerpicking", "barre", "barre chord", "technique"]):
+            # Map mention to preferred technique name in our detailed explanations
+            technique_map = {
+                "vibrato": "Vibrato",
+                "hammer on": "Hammer-On",
+                "hammer-on": "Hammer-On",
+                "pull off": "Pull-Off",
+                "pull-off": "Pull-Off",
+                "slide": "Slide",
+                "bend": "Bend",
+                "palm mute": "Palm Mute",
+                "palmmute": "Palm Mute",
+                "fingerpicking": "Fingerpicking",
+                "finger picking": "Fingerpicking",
+                "barre": "Barre Chord",
+                "barre chord": "Barre Chord",
+            }
+
+            for key, name in technique_map.items():
+                if key in msg_lower:
+                    return self.explain_technique(name)
+
             return """🎸 **Advanced Guitar Techniques Explained**
 
 Let me break down the major guitar techniques to take your playing to the next level!

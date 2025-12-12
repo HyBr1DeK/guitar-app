@@ -43,7 +43,7 @@ with tab1:
                 if advisor and advisor.is_configured():
                     with st.spinner(f"Loading tutorial on {technique}..."):
                         explanation = advisor.explain_technique(technique)
-                        st.write(explanation)
+                        st.markdown(explanation)
                 else:
                     st.info(f"""
                     📚 **{technique} Tutorial**
