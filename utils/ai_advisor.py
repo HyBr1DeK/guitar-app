@@ -529,8 +529,241 @@ Be specific and practical."""
         return self.chat(prompt)
     
     def explain_technique(self, technique: str) -> str:
-        """Explain a guitar technique in detail"""
-        prompt = f"""Explain the "{technique}" guitar technique in a way that's easy to understand.
+        """Explain a guitar technique in detail with comprehensive definitions"""
+        # Predefined technique definitions for consistency
+        technique_definitions = {
+            "Barre Chord": {
+                "definition": "A barre chord is a chord created by using one finger (usually the index finger) to press multiple strings across the same fret, while other fingers play notes on higher frets.",
+                "steps": [
+                    "Place your index finger flat across all 6 strings at the target fret (e.g., 1st fret for F major)",
+                    "Press firmly so all strings produce clear sounds",
+                    "Arrange other fingers (middle, ring, pinky) to form the chord shape",
+                    "Strum all strings and adjust pressure until you hear a clean sound",
+                    "Practice transitioning between barre chords and open chords"
+                ],
+                "mistakes": [
+                    "Not pressing firmly enough - causes muted or buzzing strings",
+                    "Angling the finger instead of keeping it flat - creates dead strings",
+                    "Pressing too hard - causes hand fatigue and limits endurance",
+                    "Placing finger too close to the fret line - produces buzz",
+                    "Not leaving enough space for other fingers"
+                ],
+                "tips": [
+                    "Build finger strength gradually - practice 5 minutes daily",
+                    "Use the thickest part of your index finger for better pressure distribution",
+                    "Keep your thumb behind the neck for support",
+                    "Start with easier shapes like F Major before complex barre chords",
+                    "Use proper guitar strap height to reduce wrist strain"
+                ],
+                "songs": ["Wonderwall (Oasis)", "Wild Thing (The Troggs)", "Knocking On Heaven's Door (Bob Dylan)"]
+            },
+            "Fingerpicking": {
+                "definition": "Fingerpicking is a technique where you pluck individual strings with your fingers (or fingerpicks) rather than using a pick, allowing complex melodies and patterns.",
+                "steps": [
+                    "Assign fingers: Thumb (p) on bass strings, Index (i) on G string, Middle (m) on B string, Ring (a) on high E",
+                    "Pluck each string individually in a steady pattern (e.g., thumb-index-middle-ring)",
+                    "Practice the basic pattern slowly (16-20 BPM) until it's smooth",
+                    "Increase speed gradually while maintaining accuracy",
+                    "Add chord changes while maintaining the fingerpicking pattern"
+                ],
+                "mistakes": [
+                    "Using inconsistent finger placement - causes muted or weak notes",
+                    "Tension in the hand - limits speed and endurance",
+                    "Not muting strings after plucking - creates muddy sound",
+                    "Irregular rhythm - breaks the musical flow",
+                    "Focusing only on speed instead of clarity"
+                ],
+                "tips": [
+                    "Start with 3-finger patterns before moving to 4-finger patterns",
+                    "Keep fingernails trimmed appropriately for your preferred style",
+                    "Use fingerpicks (small plastic/metal pieces) for louder, brighter tone",
+                    "Practice with a metronome to develop consistent rhythm",
+                    "Learn classical guitar patterns as foundation"
+                ],
+                "songs": ["Stairway To Heaven (Led Zeppelin)", "Dust to Dust (The Civil Wars)", "Classical Gas (Mason Williams)"]
+            },
+            "Vibrato": {
+                "definition": "Vibrato is a technique where you slightly bend and release a note repeatedly to add expression and sustain, creating a wavering pitch effect.",
+                "steps": [
+                    "Fret a note on any string with your finger",
+                    "Bend the string slightly (about quarter-tone) while holding the note",
+                    "Release the bend back to original pitch immediately",
+                    "Repeat this bend-release cycle 3-6 times per second",
+                    "Keep the cycle smooth and even for best effect"
+                ],
+                "mistakes": [
+                    "Bending too much - changes the note entirely instead of creating vibrato",
+                    "Inconsistent speed - sounds uneven and unprofessional",
+                    "Using entire arm instead of finger - difficult to control",
+                    "Starting vibrato immediately - should develop tone first",
+                    "Not releasing enough between bends"
+                ],
+                "tips": [
+                    "Practice with sustained notes (e.g., whole notes or half notes)",
+                    "Use your wrist movement in a small circular motion for smooth vibrato",
+                    "Listen to blues and rock guitar solos for vibrato examples",
+                    "Start slow and gradually increase the speed",
+                    "Use vibrato on longer notes to add expression"
+                ],
+                "songs": ["All Blues (Miles Davis)", "Comfortably Numb (Pink Floyd)", "Texas Flood (Stevie Ray Vaughan)"]
+            },
+            "Slide": {
+                "definition": "A slide is a smooth transition from one note to another by sliding your finger along the fretboard without lifting it, creating a glissando effect.",
+                "steps": [
+                    "Fret and pluck a starting note",
+                    "While the note is ringing, slide your finger up or down the fretboard",
+                    "Maintain pressure so the note sustains throughout the slide",
+                    "Land on the target fret and continue holding for the desired duration",
+                    "Practice both ascending and descending slides"
+                ],
+                "mistakes": [
+                    "Lifting the finger during the slide - breaks the connection",
+                    "Sliding too fast or too slow - sounds unmusical",
+                    "Not maintaining pressure - creates weak or muted tone",
+                    "Overshooting the target fret - lands on wrong note",
+                    "Using excessive pressure - causes fatigue"
+                ],
+                "tips": [
+                    "Use a glass slide or metal slide for more pronounced effect",
+                    "Finger slides work great for blues and rock genres",
+                    "Combine with vibrato for expressive solos",
+                    "Practice sliding intervals (whole step, half step, octave)",
+                    "Use slide notation (/) in tabs to recognize when to use this technique"
+                ],
+                "songs": ["Layla (Eric Clapton)", "The Lemon Song (Led Zeppelin)", "Watermelon Man (Herbie Hancock)"]
+            },
+            "Hammer-On": {
+                "definition": "A hammer-on is a technique where you pluck a lower note and then 'hammer' (forcefully press) a higher fret on the same string without plucking again.",
+                "steps": [
+                    "Pluck an open string or fretted note",
+                    "While that note is ringing, forcefully press down a higher fret on the same string",
+                    "The pressure should be strong enough to sound the note clearly",
+                    "Practice until the hammered note sounds as strong as a plucked note",
+                    "Combine with pull-offs for even more expression"
+                ],
+                "mistakes": [
+                    "Not pressing hard enough - produces weak or muted note",
+                    "Pressing on wrong fret - hits unintended note",
+                    "Waiting too long after initial pluck - loses momentum",
+                    "Using finger directly above fret instead of to the side",
+                    "Hammering only on high strings - practice all strings"
+                ],
+                "tips": [
+                    "Practice hammer-ons from open strings first (easiest)",
+                    "The higher you jump, the harder you need to press",
+                    "Use hammer-ons in scales to increase speed",
+                    "Combine with pull-offs to create legato (smooth) lines",
+                    "Listen to fast blues and rock solos for hammer-on examples"
+                ],
+                "songs": ["Eruption (Van Halen)", "Smoke on the Water (Deep Purple)", "Enter Sandman (Metallica)"]
+            },
+            "Pull-Off": {
+                "definition": "A pull-off is the opposite of a hammer-on: you fret two notes on the same string and 'pull' your finger off the higher fret to sound the lower note.",
+                "steps": [
+                    "Fret two notes on the same string (e.g., 5th fret and 3rd fret)",
+                    "Pluck the higher fretted note",
+                    "While it's ringing, quickly pull your finger downward off the fretboard",
+                    "This motion should 'pull' the string and sound the lower note",
+                    "Practice until the pulled note is strong and clear"
+                ],
+                "mistakes": [
+                    "Pulling off too slowly - loses the note",
+                    "Lifting finger straight up instead of pulling - doesn't trigger note",
+                    "Not fretting the lower note clearly before pulling",
+                    "Pulling with wrist instead of individual finger",
+                    "Not enough string vibration from the pull"
+                ],
+                "tips": [
+                    "Practice with two frets close together first (1-2 fret distance)",
+                    "Think of 'scooping' your finger downward and outward",
+                    "Pair with hammer-ons to create smooth legato passages",
+                    "Use pull-offs to add dynamics and expression to solos",
+                    "Practice on thick strings (low E, A, D) as they're easier"
+                ],
+                "songs": ["Stairway To Heaven (Led Zeppelin)", "Comfortably Numb (Pink Floyd)", "Purple Haze (Jimi Hendrix)"]
+            },
+            "Bend": {
+                "definition": "A bend is a technique where you push or pull a string sideways to raise the pitch without changing frets, creating a smooth pitch transition.",
+                "steps": [
+                    "Fret a note on any string",
+                    "Use other fingers to support the fretting finger",
+                    "Push (or pull on higher strings) the string sideways perpendicular to the fretboard",
+                    "Raise the pitch by a half-step (12 cents) or full step (24 cents) as desired",
+                    "Release the string back to original pitch if it's a bend-and-release"
+                ],
+                "mistakes": [
+                    "Not supporting the finger - can't bend properly or too much strain",
+                    "Bending too sharp - overshoots the target pitch",
+                    "Losing control during release - wanders in pitch",
+                    "Using only one finger - weak and unstable bend",
+                    "Losing the note entirely - improper string contact"
+                ],
+                "tips": [
+                    "Use multiple fingers stacked behind the bending finger for support",
+                    "Practice on thicker strings first (easier to bend)",
+                    "Learn to 'pre-bend' - bend before plucking for instant pitch change",
+                    "Full step bends are common in blues (raise pitch 2 frets)",
+                    "Release bends smoothly for expressive, musical phrases"
+                ],
+                "songs": ["All Along The Watchtower (Jimi Hendrix)", "Red House (Jimi Hendrix)", "Voodoo Child (Stevie Ray Vaughan)"]
+            },
+            "Palm Mute": {
+                "definition": "Palm muting is a technique where you rest your palm lightly on the strings near the bridge while picking, creating a muted, percussive tone.",
+                "steps": [
+                    "Rest the fleshy side of your picking hand palm on the strings near the bridge",
+                    "Keep light pressure - strings should still vibrate but sound muted",
+                    "Pluck the strings normally with your pick",
+                    "Adjust palm position to control the amount of muting (closer to bridge = more mute)",
+                    "Use consistent pressure for even tone throughout the passage"
+                ],
+                "mistakes": [
+                    "Pressing too hard - stops strings from vibrating entirely",
+                    "Palm too far from bridge - doesn't mute effectively",
+                    "Inconsistent pressure - creates uneven tone",
+                    "Muting only some strings - loses rhythm clarity",
+                    "Forgetting to return to normal position - next section sounds muddy"
+                ],
+                "tips": [
+                    "Start with all 6 strings muted together before doing partial mutes",
+                    "Used extensively in metal, funk, and hard rock styles",
+                    "Combines well with percussive strumming patterns",
+                    "Practice with a metronome for tight, locked-in feel",
+                    "Can be combined with downstrokes and upstrokes"
+                ],
+                "songs": ["Enter Sandman (Metallica)", "Master of Puppets (Metallica)", "Toxicity (System Of A Down)"]
+            }
+        }
+        
+        if technique in technique_definitions:
+            defn = technique_definitions[technique]
+            
+            explanation = f"""
+# 🎸 {technique.upper()}
+
+## Definition
+{defn['definition']}
+
+## Step-by-Step Instructions
+"""
+            for i, step in enumerate(defn['steps'], 1):
+                explanation += f"\n{i}. {step}"
+            
+            explanation += "\n\n## Common Mistakes to Avoid\n"
+            for mistake in defn['mistakes']:
+                explanation += f"- ❌ {mistake}\n"
+            
+            explanation += "\n## Practice Tips\n"
+            for tip in defn['tips']:
+                explanation += f"- ✅ {tip}\n"
+            
+            explanation += f"\n## Songs Using This Technique\n"
+            for song in defn['songs']:
+                explanation += f"- 🎵 {song}\n"
+            
+            return explanation
+        else:
+            # Fallback to AI if technique not in predefined list
+            prompt = f"""Explain the "{technique}" guitar technique in a way that's easy to understand.
 Include:
 1. Basic definition
 2. Step-by-step instructions
@@ -538,8 +771,8 @@ Include:
 4. Practice tips
 5. Songs that use this technique
 Keep it concise and practical for beginners."""
-        
-        return self.chat(prompt)
+            
+            return self.chat(prompt)
     
     def get_learning_path(self, songs: list) -> str:
         """Create a learning path for multiple songs"""
