@@ -187,16 +187,19 @@ st.info("""
 **💡 How to use:**
 1. Enter a song name and artist (e.g., "Hotel California by Eagles")
 2. Browse through available tabs from different sources
-3. View difficulty levels, ratings, and user reviews
-4. Save your favorite tabs for quick access
-5. Transpose tabs to your preferred key
+**🚀 Features Available Now:**
+- 🤖 Intelligent AI that answers guitar questions in detail
+- 📤 Upload songs to analyze chord progressions
+- 📚 Personalized learning recommendations
+- 📋 Practice plans and technique tutorials
+- 💾 Track your progress and mastered songs
 
-**🚀 Features Coming Soon:**
-- AI-powered tab recommendations based on your skill level
-- Video tutorials integrated with tabs
-- Chord difficulty analyzer
-- Practice mode with BPM control
+**Try These:**
+- Ask "How to play F chord?" in AI Assistant
+- Upload a song in My Songs to get chord analysis
+- Create a learning path in Learning Hub
+- Save your favorite tabs in My Library
 """)
 
 st.markdown("---")
-st.caption("🎸 Guitar Tab Finder AI | Powered by OpenAI & Tab Databases | Made with ❤️")
+st.caption("🎸 Guitar Tab Finder AI | Powered by Intelligent AI | Made with ❤️")

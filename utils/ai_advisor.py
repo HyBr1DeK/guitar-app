@@ -553,3 +553,127 @@ Include:
 5. Practice structure"""
         
         return self.chat(prompt)
+    
+    def analyze_song_chords(self, song_content: str, song_name: str = "Your Song") -> str:
+        """Analyze chords in a song and provide learning tips"""
+        # Extract chords from content (simple regex-based approach)
+        import re
+        chord_pattern = r'\b([A-G][#b]?(?:maj7|maj|min|m|dim|aug|sus2|sus4|7|9|11|13)?)\b'
+        chords_found = list(set(re.findall(chord_pattern, song_content)))
+        
+        if not chords_found:
+            return f"""📋 **Analysis of "{song_name}"**
+
+I couldn't detect specific chords in the uploaded content. Here are some tips:
+
+**To get accurate chord analysis:**
+1. Make sure chords are clearly marked (e.g., [Am], (C), Am, etc.)
+2. Include chord names at the right positions above lyrics
+3. Use standard chord notation (A, Am, A7, Amaj7, etc.)
+
+**Example format:**
+```
+[Am]                [C]
+I'd like to be under the sea
+[F]                [G]
+In the octopus's garden in the shade
+```
+
+Upload a file with clearly marked chords and I'll analyze it for you!"""
+        
+        chords_str = ", ".join(sorted(chords_found))
+        
+        return f"""📋 **Chord Analysis: "{song_name}"**
+
+**Chords Found:** {chords_str}
+
+**Analysis:**
+
+{self._analyze_chord_difficulty(chords_found)}
+
+**Learning Recommendation:**
+
+{self._get_learning_recommendation(chords_found)}
+
+**Practice Tips:**
+
+{self._get_practice_tips(chords_found)}
+
+**Progression Info:**
+
+{self._analyze_progression(chords_found)}"""
+    
+    def _analyze_chord_difficulty(self, chords: list) -> str:
+        """Analyze the difficulty of chords in the song"""
+        easy_chords = {'A', 'Am', 'C', 'D', 'Dm', 'E', 'Em', 'G'}
+        intermediate_chords = {'A7', 'B', 'Bm', 'D7', 'E7', 'F', 'G7', 'B7'}
+        advanced_chords = {'Fm', 'Cmaj7', 'Amaj7', 'Emaj7', 'Dmaj7', 'Gmaj7', 'Bbmaj7'}
+        
+        easy_count = sum(1 for c in chords if c in easy_chords)
+        intermediate_count = sum(1 for c in chords if c in intermediate_chords)
+        advanced_count = sum(1 for c in chords if c in advanced_chords)
+        
+        total = len(chords)
+        
+        if easy_count == total:
+            difficulty = "🟢 **Beginner Level** - Perfect for starting out!"
+        elif easy_count >= total * 0.5:
+            difficulty = "🟡 **Intermediate Level** - Good progression challenge"
+        else:
+            difficulty = "🔴 **Advanced Level** - For experienced players"
+        
+        return f"""{difficulty}
+
+- Easy chords ({easy_count}): {', '.join(c for c in chords if c in easy_chords) or 'None'}
+- Intermediate chords ({intermediate_count}): {', '.join(c for c in chords if c in intermediate_chords) or 'None'}
+- Advanced chords ({advanced_count}): {', '.join(c for c in chords if c in advanced_chords) or 'None'}"""
+    
+    def _get_learning_recommendation(self, chords: list) -> str:
+        """Get personalized learning recommendations"""
+        has_barre = any('b' in c.lower() or '#' in c.lower() for c in chords)
+        has_majors = any('maj' in c.lower() for c in chords)
+        has_seventh = any('7' in c.lower() for c in chords)
+        
+        recommendations = []
+        
+        if has_barre:
+            recommendations.append("🎸 Master **barre chords** - essential for this song")
+        
+        if has_seventh:
+            recommendations.append("🎵 Practice **7th chords** for more complex harmonies")
+        
+        if has_majors:
+            recommendations.append("✨ Work on **major chord transitions** for smooth playing")
+        
+        if not recommendations:
+            recommendations.append("✓ You already know most of these chords!")
+        
+        return "\n".join(recommendations)
+    
+    def _get_practice_tips(self, chords: list) -> str:
+        """Get specific practice tips for the chords"""
+        tips = []
+        
+        if 'F' in chords or 'Fm' in chords:
+            tips.append("- **F / Fm chord**: Practice daily to build finger strength")
+        
+        if 'B' in chords or 'Bm' in chords:
+            tips.append("- **B / Bm chord**: Start with barre at slow tempo (40 BPM)")
+        
+        if any('7' in c for c in chords):
+            tips.append("- **7th chords**: Focus on smooth transitions between them")
+        
+        if not tips:
+            tips.append("- Practice chord transitions between each pair")
+        
+        tips.append("- Use a metronome starting at 60 BPM")
+        tips.append("- Practice the most difficult transition 10 times daily")
+        
+        return "\n".join(tips)
+    
+    def _analyze_progression(self, chords: list) -> str:
+        """Analyze the chord progression"""
+        if len(chords) <= 1:
+            return "Single chord or not enough data for progression analysis"
+        
+        return f"This song uses **{len(chords)} different chords**. Common progression patterns in songs like this help build muscle memory and finger agility."

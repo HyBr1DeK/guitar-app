@@ -58,7 +58,7 @@ if user_input:
 st.markdown("---")
 st.subheader("⚡ Quick Actions")
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     if st.button("🎯 Get Song Recommendation"):
@@ -78,5 +78,9 @@ with col2:
                 st.info(response)
 
 with col3:
-    if st.button("📋 Generate Practice Plan"):
-        st.info("Go to Learning Hub → Practice Plans to generate a personalized plan!")
+    if st.button("📋 Analyze Chords"):
+        st.info("Go to **My Songs** page to upload and analyze your song files!")
+
+with col4:
+    if st.button("🎵 My Songs"):
+        st.info("Visit the **My Songs** page to upload and manage your song collection!")
