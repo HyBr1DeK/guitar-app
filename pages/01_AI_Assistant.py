@@ -61,30 +61,28 @@ st.subheader("⚡ Quick Actions")
 col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
-    if st.button("🎯 Song Recommendation"):
+    if st.button("🎯 Song Recommendation", use_container_width=True):
         with st.spinner("Getting recommendations..."):
             response = st.session_state.ai_advisor.get_tab_recommendation("Intermediate", "rock")
             st.info(response)
 
 with col2:
-    if st.button("📚 Learn a Technique"):
+    if st.button("📚 Learn a Technique", use_container_width=True):
         technique = st.selectbox(
             "Choose a technique",
-            ["Barre Chord", "Fingerpicking", "Vibrato", "Slide", "Hammer-On"]
+            ["Barre Chord", "Fingerpicking", "Vibrato", "Slide", "Hammer-On"],
+            key="technique_select"
         )
-        if st.button(f"Explain {technique}", key=f"explain_{technique}"):
+        if st.button(f"Explain {technique}", key=f"explain_{technique}", use_container_width=True):
             with st.spinner(f"Learning about {technique}..."):
                 response = st.session_state.ai_advisor.explain_technique(technique)
                 st.info(response)
 
 with col3:
-    if st.button("🎸 Chords Library"):
-        st.info("Go to **Chords** page to browse 30+ chords with diagrams!")
+    st.page_link("pages/06_Chords.py", label="🎸 Chords Library", use_container_width=True)
 
 with col4:
-    if st.button("📤 Analyze Song"):
-        st.info("Go to **My Songs** page to upload and analyze!")
+    st.page_link("pages/05_My_Songs.py", label="📤 Analyze Song", use_container_width=True)
 
 with col5:
-    if st.button("📚 My Collection"):
-        st.info("Go to **My Library** to track your progress!")
+    st.page_link("pages/02_My_Library.py", label="📚 My Collection", use_container_width=True)

@@ -374,11 +374,22 @@ for chord_name, chord_data in CHORDS_DB.items():
 
 # Sidebar - Quick search
 with st.sidebar:
-    st.subheader("🔍 Search Chords")
-    search_query = st.text_input("Search by chord name", placeholder="e.g., F, Am7, Power")
+    st.subheader("🔍 Quick Chord Search")
+    
+    # Dropdown to select a chord
+    chord_names = list(CHORDS_DB.keys())
+    selected_chord_dropdown = st.selectbox(
+        "Choose a chord to learn:",
+        chord_names,
+        index=0,
+        key="chord_dropdown"
+    )
+    
+    if selected_chord_dropdown:
+        st.session_state.selected_chord = selected_chord_dropdown
     
     st.markdown("---")
-    st.subheader("📂 Categories")
+    st.subheader("📂 Filter by Category")
     selected_category = st.radio(
         "Select category",
         ["All Chords"] + list(categories.keys()),
@@ -388,18 +399,11 @@ with st.sidebar:
 # Main content
 st.subheader("📚 Browse All Chords")
 
-# Filter chords
-if search_query:
-    filtered_chords = [
-        chord for chord in CHORDS_DB.keys()
-        if search_query.lower() in chord.lower()
-    ]
-    st.write(f"**Search Results:** {len(filtered_chords)} chord(s) found")
+# Filter chords based on category selection
+if selected_category == "All Chords":
+    filtered_chords = list(CHORDS_DB.keys())
 else:
-    if selected_category == "All Chords":
-        filtered_chords = list(CHORDS_DB.keys())
-    else:
-        filtered_chords = categories[selected_category]
+    filtered_chords = categories[selected_category]
 
 # Display chords in a grid
 col1, col2, col3 = st.columns(3)
@@ -441,14 +445,15 @@ if "selected_chord" in st.session_state:
     col1, col2 = st.columns([1, 2])
     
     with col1:
+        st.markdown("**Visual Diagram:**")
         st.code(chord_data["diagram"], language="text")
     
     with col2:
-        st.write("**Finger Positions:**")
+        st.write("**How to Play:**")
         st.write(chord_data["finger_positions"])
         
-        st.write("\n**Pro Tips:**")
-        st.info(chord_data["tips"])
+        st.write("\n**🎯 Pro Tips:**")
+        st.success(chord_data["tips"])
     
     # Practice info
     st.subheader("🎵 Songs Using This Chord")
