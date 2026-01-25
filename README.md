@@ -54,6 +54,15 @@ streamlit run app.py
 
 The app will open in your default browser at `http://localhost:8501`
 
+### Editor / Pylance setup (VS Code)
+
+If you're using VS Code and see warnings like "Import 'streamlit' could not be resolved":
+- Make sure you've selected the correct Python interpreter (your virtualenv) in VS Code.
+- Install dependencies in that environment (`pip install -r requirements.txt`).
+- This repository includes an editor-only stub for Streamlit to help Pylance type-checking without installing packages; if you're still seeing issues, reload VS Code or re-select the interpreter.
+
+If Pylance is still unresolved, try reloading the window (`Developer: Reload Window`) or re-creating the venv.
+
 ## 📁 Project Structure
 
 ```

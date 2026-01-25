@@ -1,0 +1,10 @@
+{
+  "typeCheckingMode": "basic",
+  "stubPath": "stubs",
+  "executionEnvironments": [
+    {
+      "root": "./",
+      "pythonVersion": "3.10"
+    }
+  ]
+}

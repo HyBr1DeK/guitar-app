@@ -28,6 +28,8 @@ if st.session_state.ai_advisor.is_configured():
 # Chat interface
 st.subheader("💬 Chat")
 chat_container = st.container()
+# Placeholder for technique explanations (separate from the chat UI)
+technique_placeholder = st.empty()
 
 # Display conversation history
 if "chat_history" not in st.session_state:
@@ -82,12 +84,31 @@ if st.session_state.get("show_technique_selector", False):
     
     if st.button("📖 Learn & Get Answer", use_container_width=True):
         with st.spinner(f"Loading {technique} details..."):
+            # Remove any prior assistant messages that contain technique overviews
+            technique_names = ["vibrato", "hammer-on", "hammer on", "pull-off", "pull off", "slide", "bend", "palm mute", "fingerpicking", "barre"]
+            new_history = []
+            for msg in st.session_state.chat_history:
+                if msg.get("role") == "assistant":
+                    content_lower = msg.get("content", "").lower()
+                    raw_content = msg.get("content", "")
+                    # Only remove assistant messages that are likely technique-overviews (contain the guitar emoji and technique keywords)
+                    if ("🎸" in raw_content and (any(name in content_lower for name in technique_names) or "advanced guitar techniques" in content_lower)):
+                        # skip (remove) assistant messages that are technique-overviews
+                        continue
+                new_history.append(msg)
+            st.session_state.chat_history = new_history
+
+            # Display the requested technique explanation in its own placeholder
             response = st.session_state.ai_advisor.explain_technique(technique)
-            st.markdown(response)
+            technique_placeholder.empty()
+            with technique_placeholder:
+                with st.expander(f"📚 Mastering {technique}", expanded=True):
+                    st.markdown(response)
     
     st.divider()
     if st.button("❌ Close & Hide", use_container_width=True):
         st.session_state.show_technique_selector = False
+        technique_placeholder.empty()
         st.rerun()
 
 with col3:
